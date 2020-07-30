@@ -118,7 +118,7 @@ HTTP_STATUS 状态码是在更深一层的自定义处理中.
 
 如果要自定义处理，可实现 handle 方法，同样会接收 response 的对象 
 
-(注意：实现 handle 方法后，HTTP_STATUS 常量将无效)
+(注意：实现 handle 方法后，HTTP_STATUS 常量将无效，render 渲染方法也将无效)
 ```
 public function handle($response)
 {
