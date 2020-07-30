@@ -1,4 +1,4 @@
-## hyperf-sanctum
+## hyperf-exception
 Hyperf 的异常错误处理，有 Json 和 View 自定义渲染
 
 ## 安装
