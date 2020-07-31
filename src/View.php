@@ -26,6 +26,14 @@ class View extends Exception
     {
         $render = ApplicationContext::getContainer()->get(RenderInterface::class);
         
-        return $render->render($this->view, ['message' => $this->getMessage()]);
+        return $render->render($this->view, $this->view());
+    }
+
+    // 自定义视图参数
+    protected function view()
+    {
+        return [
+            'message' => $this->getMessage()
+        ];
     }
 }

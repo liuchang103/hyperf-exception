@@ -18,11 +18,17 @@ class Json extends Exception
     // JSON Code 渲染
     public function render(ResponseInterface $response)
     {
-        $data = json_encode([
-            'code' => $this->getCode(),
-            'message' => $this->getMessage()
-        ], JSON_UNESCAPED_UNICODE);
+        $data = json_encode($this->json(), JSON_UNESCAPED_UNICODE);
         
         return $response->withBody(new SwooleStream($data));
+    }
+
+    // json 格式
+    protected function json()
+    {
+        return [
+            'code' => $this->getCode(),
+            'message' => $this->getMessage()
+        ];
     }
 }

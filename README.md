@@ -60,12 +60,68 @@ throw new \App\Exception\Error('Created Error');
 {"code":200,"message":"Created Error"}
 ```
 
+定义 json 格式
+```
+class Error extends \HyperfException\Json
+{
+    const CODE = -1;
+    const HTTP_STATUS = 500;
+
+    // 自定义 json 格式
+    protected function json()
+    {
+        return [
+            'errcode' => $this->getCode(),
+            'errmessage' => $this->getMessage()
+        ];
+    }
+}
+
+// 抛出
+throw new \App\Exception\Error('Created Error');
+
+// 将抛出 500 的 json 格式
+{"errcode":-1,"errmessage":"Created Error"}
+```
+
+自定义传参
+```
+class Error extends \HyperfException\Json
+{
+    const CODE = -1;
+    const HTTP_STATUS = 500;
+
+    public function __construct($message, $model)
+    {
+        parent::__construct($message);
+
+        $this->model = $model;
+    }
+
+    // 自定义 json 格式
+    protected function json()
+    {
+        return [
+            'errcode' => $this->getCode(),
+            'errmessage' => $this->getMessage(),
+            'model' => $this->model
+        ];
+    }
+}
+
+// 抛出
+throw new \App\Exception\Error('Update Error', $model);
+
+// 将抛出 500 的 json 格式
+{"errcode":-1,"errmessage":"Update Error", "model":{}}
+```
+
 #### 继承 View
 使用常量约定 VIEW，让控制器中消失 “模版名”
 ```
 namespace App\Exception;
 
-class Miss extends \HyperfException\Json
+class Miss extends \HyperfException\View
 {
     const VIEW = '404';
 }
@@ -79,7 +135,7 @@ throw new \App\Exception\Miss('找不到存在的页面');
 
 定义 Http 状态码
 ```
-class Miss extends \HyperfException\Json
+class Miss extends \HyperfException\View
 {
     const VIEW = '404';
     const HTTP_STATUS = 404;
@@ -87,6 +143,39 @@ class Miss extends \HyperfException\Json
 
 // 抛出
 throw new \App\Exception\Miss('找不到存在的页面');
+```
+
+自定义视图传参
+```
+class Miss extends \HyperfException\View
+{
+    const VIEW = '404';
+    const HTTP_STATUS = 404;
+
+    protected $model;
+
+    public function __construct($message, $model)
+    {
+        parent::__construct($message);
+
+        $this->model = $model;
+    }
+
+    // 自定义视图参数
+    protected function view()
+    {
+        return [
+            'model' => $this->model
+        ];
+    }
+}
+
+// 抛出
+throw new \App\Exception\Miss('Error', $model);
+
+// 404.blade.php
+{{ $model->name }} 访问页面错误
+
 ```
 
 ## 自定义处理
