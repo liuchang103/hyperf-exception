@@ -93,7 +93,7 @@ throw new \App\Exception\Miss('找不到存在的页面');
 
 如果需要自定义渲染，可继承 \HyperfException\Exception 并实现 render 方法，会接收 response 的对象
 ```
-use \HyperfException\Exception;
+use HyperfException\Exception;
 use Hyperf\HttpMessage\Stream\SwooleStream;
 
 class Message extends Exception
